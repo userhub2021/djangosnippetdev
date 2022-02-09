@@ -1,16 +1,27 @@
-from turtle import Turtle, title
-from venv import create
-from django.db import models
+from cgitb import text
+from turtle import title
 from django.conf import settings
+from django.db import models
 # Create your models here.
 
 class Snippet(models.Model):
     title = models.CharField('タイトル', max_length=120)
     code = models.TextField('コード', blank=True)
     description = models.TextField("説明", blank=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='投稿者',on_delete=models.CASCADE)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, 
+                                   verbose_name='投稿者',
+                                   on_delete=models.CASCADE)
     created_at =models.DateTimeField('投稿日', auto_now_add=True)
     updated_at = models.DateTimeField('更新日', auto_now=True)
 
     def __str__(self):
         return self.title   
+
+class Comment(models.Model):
+    text = models.TextField('本文', blank=True) 
+    comment_at = models.DateTimeField('投稿日', auto_now_add=True)
+    commented_by = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name='投稿者', on_delete=models.CASCADE)
+    commeted_to =models.ForeignKey(Snippet,verbose_name='スニペット', on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.text
