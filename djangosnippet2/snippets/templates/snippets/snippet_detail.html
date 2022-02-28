@@ -9,7 +9,7 @@
 <h2>{{ snippets.title }} by {{ snippet.created_by.username }}</h2>
 
 <div class="snippet-data">
-    投稿日: {{ snippet.created_at|data:"DATETIME_FORMAT" }}
+    投稿日: {{ snippet.created_at|date:"DATETIME_FORMAT" }}
     {% if user.is_authenticated and snippet.created_by_id == user.id %}
     <a href="{% url 'snippet_edit' snippet.id %}">編集</a>
     {% endif %}
